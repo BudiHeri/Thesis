@@ -1,112 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
-        xmlns:bldg="http://www.opengis.net/citygml/building/2.0" 
-        xmlns:core="http://www.opengis.net/citygml/2.0" 
-        xmlns:gml="http://www.opengis.net/gml" 
-        xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
-        elementFormDefault="qualified" 
-        targetNamespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
-        version="1.0">
+		xmlns:core="http://www.opengis.net/citygml/2.0" 
+		xmlns:gml="http://www.opengis.net/gml" 
+		xmlns:bldg="http://www.opengis.net/citygml/building/2.0"
+		xmlns:grp="http://www.opengis.net/citygml/cityobjectgroup/2.0"
+		xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
+		elementFormDefault="qualified" 
+		targetNamespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" version="1.0">
   
   <annotation>
     <documentation>ADE untuk mendeskripsikan Persil Tanah dan Hak Atas Tanah</documentation>
   </annotation>
-
   <import namespace="http://www.opengis.net/citygml/2.0" schemaLocation="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
   <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/cityobjectgroup/2.0" schemaLocation="http://schemas.opengis.net/citygml/cityobjectgroup/2.0/cityobjectgroup.xsd"/>
   <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
-  
-  <element name="PersilTanah" substitutionGroup="core:_CityObject" type="lanpar:PersilTanahType">
-    <annotation>
-      <appinfo>
-        <taggedValue tag="topLevel">false</taggedValue>
-      </appinfo>
-    </annotation>
-  </element>
-  
-  <complexType name="PersilTanahType">
-    <complexContent>
-      <extension base="core:AbstractCityObjectType">
-        <sequence>
-          <element name="NIB" type="string"/>
-          <element minOccurs="0" name="lod0Surface" type="gml:SurfacePropertyType"/>
-          <element minOccurs="0" name="lod1Surface" type="gml:SurfacePropertyType"/>
-          <element maxOccurs="unbounded" name="ruangHak" type="lanpar:RuangHakPropertyType">
-            <annotation>
-              <appinfo>
-                <taggedValue tag="relationType">aggregation</taggedValue>
-                <taggedValue tag="minOccurs">1</taggedValue>
-                <taggedValue tag="maxOccurs">unbounded</taggedValue>
-              </appinfo>
-            </annotation>
-          </element>
-        </sequence>
-      </extension>
-    </complexContent>
-  </complexType>
-
-  <complexType name="PersilTanahPropertyType">
-    <sequence minOccurs="0">
-      <element ref="lanpar:PersilTanah">
-        <annotation>
-          <appinfo>
-            <taggedValue tag="ignore">true</taggedValue>
-          </appinfo>
-        </annotation>
-      </element>
-    </sequence>
-    <attributeGroup ref="gml:AssociationAttributeGroup"/>
-  </complexType>
-
-  <element name="RuangHak" substitutionGroup="core:_CityObject" type="lanpar:RuangHakType">
-    <annotation>
-      <documentation>Deskripsi Hak Atas Tanah berdasarkan peraturan-peraturan terkait.</documentation>
-      <appinfo>
-        <taggedValue tag="topLevel">false</taggedValue>
-      </appinfo>
-    </annotation>
-  </element>
-
-  <complexType name="RuangHakType">
-    <complexContent>
-      <extension base="core:AbstractCityObjectType">
-        <sequence>
-          <element name="NIK" type="string"/>
-          <element name="HakAtasTanah" type="lanpar:JenisHakType"/>
-          <element name="TanggalMulaiBerlaku" type="date"/>
-          <element name="TanggalBerakhirBerlaku" type="date"/>
-          <element minOccurs="0" name="lod2MultiSolid" type="gml:MultiSolidPropertyType"/>
-          <element minOccurs="0" name="lod3MultiSolid" type="gml:MultiSolidPropertyType"/>
-          <element minOccurs="0" name="lod4MultiSolid" type="gml:MultiSolidPropertyType"/>
-          <element minOccurs="0" name="lod1MultiSolid" type="gml:MultiSolidPropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="ruangHak" type="bldg:RoomType">
-            <annotation>
-              <appinfo>
-                <taggedValue tag="relationType">association</taggedValue>
-                <taggedValue tag="minOccurs">0</taggedValue>
-                <taggedValue tag="maxOccurs">unbounded</taggedValue>
-              </appinfo>
-            </annotation>
-          </element>
-        </sequence>
-      </extension>
-    </complexContent>
-  </complexType>
-
-  <complexType name="RuangHakPropertyType">
-    <sequence minOccurs="0">
-      <element ref="lanpar:RuangHak">
-		<annotation>
-          <appinfo>
-            <taggedValue tag="ignore">true</taggedValue>
-		  </appinfo>
-        </annotation>
-	   </element>
-    </sequence>
-    <attributeGroup ref="gml:AssociationAttributeGroup"/>
-  </complexType>
-
-  <simpleType name="JenisHakType">
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <simpleType name="LA_SurfaceRelationTypeType">
+    <restriction base="string">
+      <enumeration value="Above"/>
+      <enumeration value="Below"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="LA_HakAtasTanahType">
     <restriction base="string">
       <enumeration value="HakMilik"/>
       <enumeration value="HakPengelolaan"/>
@@ -114,8 +30,234 @@
       <enumeration value="HakGunaUsaha"/>
       <enumeration value="HakPakaiAtasTanah"/>
       <enumeration value="SHMSarusun"/>
-      <enumeration value="SKBGSarusun"/>
+      <enumeration value="SHBGSarusun"/>
     </restriction>
   </simpleType>
-  
+  <element name="LandParcel" substitutionGroup="core:_CityObject" type="lanpar:LandParcelType"/>
+  <complexType name="LandParcelType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element minOccurs="0" name="extAddressID" type="string"/>
+          <element minOccurs="0" name="area" type="double"/>
+          <element name="NIB" type="string"/>
+          <element minOccurs="0" name="lod1Surface" type="gml:SurfacePropertyType"/>
+		  <element minOccurs="0" name="lod2Surface" type="gml:SurfacePropertyType"/>
+		  <element minOccurs="0" name="lod3Surface" type="gml:SurfacePropertyType"/>
+		  <element minOccurs="0" name="lod4Surface" type="gml:SurfacePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="ruangHak" type="lanpar:RuangHakPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="building" type="lanpar:BuildingPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="LandParcelPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:LandParcel"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="RuangHak" substitutionGroup="core:_CityObject" type="lanpar:RuangHakType"/>
+  <complexType name="RuangHakType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element name="NIB" type="string"/>
+          <element name="surfaceRelation" type="lanpar:LA_SurfaceRelationTypeType"/>
+          <element name="volume" type="double"/>
+          <element minOccurs="0" name="lod2Solid" type="gml:SolidPropertyType"/>
+          <element minOccurs="0" name="lod3Solid" type="gml:SolidPropertyType"/>
+          <element minOccurs="0" name="lod4Solid" type="gml:SolidPropertyType"/>
+          <element minOccurs="0" name="lod1Solid" type="gml:SolidPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="RuangHakPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:RuangHak"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BAUnit" substitutionGroup="grp:CityObjectGroup" type="lanpar:BAUnitType"/>
+  <complexType name="BAUnitType">
+    <complexContent>
+      <extension base="grp:CityObjectGroupType">
+        <sequence>
+          <element name="name" type="string"/>
+          <element name="type" type="lanpar:LA_HakAtasTanahType"/>
+          <element name="uID" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:LandParcelPropertyType"/>
+		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:RuangHakPropertyType"/>
+		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:BuildingPropertyType"/>
+		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:BuildingUnitPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BAUnitPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:BAUnit"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BuildingUnit" substitutionGroup="bldg:Room" type="lanpar:BuildingUnitType">
+    <annotation>
+      <documentation>ISO 6707-1, Room: enclosed space (4.1.1) within a storey (4.1.2), other than a circulation space (4.4.1)
+ISO 6707-1, Space: area or volume bounded actually or theoretically</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuildingUnitType">
+    <complexContent>
+      <extension base="bldg:RoomType">
+        <sequence>
+          <element name="RoomId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuildingUnitPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:BuildingUnit"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Building" substitutionGroup="bldg:Building" type="lanpar:BuildingType">
+    <annotation>
+      <documentation>SIG3D: Abstract super class of Building and BuildingPart
+&lt;p&gt; &lt;img src="../pictures/CityGML-Logo.jpg"&gt;&lt;/p&gt;</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuildingType">
+    <complexContent>
+      <extension base="bldg:BuildingType">
+        <sequence>
+          <element name="BuildingId" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="buildingUnit" type="lanpar:BuildingUnitPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuildingPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:Building"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="LandValue" substitutionGroup="lanpar:LandParcel" type="lanpar:LandValueType"/>
+  <complexType name="LandValueType">
+    <complexContent>
+      <extension base="lanpar:LandParcelType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="plannedLandUse" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="currentLandUse" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="bangunan" type="lanpar:BuildingValuePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="LandValuePropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:LandValue"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BuildingValue" substitutionGroup="lanpar:Building" type="lanpar:BuildingValueType">
+    <annotation>
+      <documentation>SIG3D: Abstract super class of Building and BuildingPart
+&lt;p&gt; &lt;img src="../pictures/CityGML-Logo.jpg"&gt;&lt;/p&gt;</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuildingValueType">
+    <complexContent>
+      <extension base="lanpar:BuildingType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="useType" type="string"/>
+          <element minOccurs="0" name="numberOfDwelling" type="integer"/>
+          <element minOccurs="0" name="numberOfFloor" type="integer"/>
+          <element minOccurs="0" name="dateOfConstruction" type="date"/>
+          <element minOccurs="0" name="constructionQuality" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="constructionMaterial" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="area" type="double"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="facadeMaterial" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="volume" type="double"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="coolingSystem" type="string"/>
+		  <element maxOccurs="unbounded" minOccurs="0" name="coolingSystemNumber" type="integer"/>
+          <element minOccurs="0" name="energyPerformance" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="additionalFeature" type="string"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="part" type="lanpar:BuildingUnitValuePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuildingValuePropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:BuildingValue"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="BuildingUnitValue" substitutionGroup="lanpar:BuildingUnit" type="lanpar:BuildingUnitValueType">
+    <annotation>
+      <documentation>SIG3D: Abstract super class of Building and BuildingPart
+&lt;p&gt; &lt;img src="../pictures/CityGML-Logo.jpg"&gt;&lt;/p&gt;</documentation>
+    </annotation>
+  </element>
+  <complexType name="BuildingUnitValueType">
+    <complexContent>
+      <extension base="lanpar:BuildingUnitType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="useType" type="string"/>
+          <element minOccurs="0" name="numberOfRoom" type="integer"/>
+          <element minOccurs="0" name="floorNumber" type="integer"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="condominiumArea" type="double"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="additionalFeature" type="string"/>
+          <element minOccurs="0" name="shareInJoinFacilities" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="BuildingUnitValuePropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:BuildingUnitValue"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SpatialPlanUnit" substitutionGroup="lanpar:LandParcel" type="lanpar:SpatialPlanUnitType"/>
+  <complexType name="SpatialPlanUnitType">
+    <complexContent>
+      <extension base="lanpar:LandParcelType">
+        <sequence>
+          <element minOccurs="0" name="puId" type="string"/>
+		  <element minOccurs="0" name="zoningType" type="string"/>
+		  <element minOccurs="0" name="statusType" type="string"/>
+		  <element minOccurs="0" name="permitType" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SpatialPlanUnitPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:SpatialPlanUnit"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SpatialPlanSpaceUnit" substitutionGroup="lanpar:RuangHak" type="lanpar:SpatialPlanSpaceUnitType"/>
+  <complexType name="SpatialPlanSpaceUnitType">
+    <complexContent>
+      <extension base="lanpar:RuangHakType">
+        <sequence>
+          <element minOccurs="0" name="puId" type="string"/>
+		  <element minOccurs="0" name="zoningType" type="string"/>
+		  <element minOccurs="0" name="statusType" type="string"/>
+		  <element minOccurs="0" name="permitType" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SpatialPlanSpaceUnitPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:SpatialPlanSpaceUnit"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
 </schema>
