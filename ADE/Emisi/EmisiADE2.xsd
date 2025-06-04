@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:core="http://www.opengis.net/citygml/2.0" xmlns:emisi="http://www.sig3d.org/citygml/2.0/emisi/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:luse="http://www.opengis.net/citygml/landuse/2.0" xmlns:tran="http://www.opengis.net/citygml/transportation/2.0" xmlns:veg="http://www.opengis.net/citygml/vegetation/2.0" xmlns:wtr="http://www.opengis.net/citygml/waterbody/2.0" elementFormDefault="qualified" targetNamespace="http://www.sig3d.org/citygml/2.0/emisi/1.0" version="1.0">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
+	xmlns:bldg="http://www.opengis.net/citygml/building/2.0" 
+	xmlns:core="http://www.opengis.net/citygml/2.0" 
+	xmlns:emisi="http://www.sig3d.org/citygml/2.0/emisi/1.0" 
+	xmlns:gml="http://www.opengis.net/gml" 
+	xmlns:luse="http://www.opengis.net/citygml/landuse/2.0" 
+	xmlns:tran="http://www.opengis.net/citygml/transportation/2.0" 
+	xmlns:veg="http://www.opengis.net/citygml/vegetation/2.0" 
+	xmlns:wtr="http://www.opengis.net/citygml/waterbody/2.0" 
+	elementFormDefault="qualified" 
+	targetNamespace="http://www.sig3d.org/citygml/2.0/emisi/1.0" version="1.0">
+
+<annotation>
+    <documentation>ADE untuk Menghitung emisi dan stok karbon</documentation>
+  </annotation>
+
   <import namespace="http://www.opengis.net/citygml/2.0" schemaLocation="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
   <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
   <import namespace="http://www.opengis.net/citygml/landuse/2.0" schemaLocation="http://schemas.opengis.net/citygml/landuse/2.0/landUse.xsd"/>
@@ -7,9 +23,9 @@
   <import namespace="http://www.opengis.net/citygml/vegetation/2.0" schemaLocation="http://schemas.opengis.net/citygml/vegetation/2.0/vegetation.xsd"/>
   <import namespace="http://www.opengis.net/citygml/waterbody/2.0" schemaLocation="http://schemas.opengis.net/citygml/waterbody/2.0/waterBody.xsd"/>
   <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
-  <import namespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" schemaLocation="https://raw.githubusercontent.com/BudiHeri/PersilADE/refs/heads/main/XSD/LandParcelADE.xsd"/>
+  <import namespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" schemaLocation="https://raw.githubusercontent.com/BudiHeri/Thesis/refs/heads/main/ADE/LandParcel/LandParcelADE.xsd"/>
   <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
-  <element name="AuxiliaryTrafficArea" substitutionGroup="tran:_TransportationObject" type="emisi:AuxiliaryTrafficAreaType">
+  <element name="AuxiliaryTrafficArea" substitutionGroup="tran:AuxiliaryTrafficArea" type="emisi:AuxiliaryTrafficAreaType">
     <annotation>
       <documentation>Type describing the class for auxiliary traffic Areas. These are the surfaces where no traffic actually
 				takes place, but which belong to a transportation object. Examples are kerbstones, road markings and grass stripes. As
@@ -19,11 +35,11 @@
   </element>
   <complexType name="AuxiliaryTrafficAreaType">
     <complexContent>
-      <extension base="tran:AbstractTransportationObjectType">
+      <extension base="tran:AuxiliaryTrafficAreaType">
         <sequence>
-          <element name="FaktorEmisi" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfAuxiliaryTrafficArea"/>
-          <element name="Luas" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfAuxiliaryTrafficArea"/>
-          <element name="TotalEmisi" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfAuxiliaryTrafficArea"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -34,99 +50,62 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="BBRumahTanggaType">
-    <union memberTypes="emisi:BBRumahTanggaEnumerationType emisi:BBRumahTanggaOtherType"/>
+  <simpleType name="HouseholdFuelType">
+    <union memberTypes="emisi:HouseholdFuelEnumerationType emisi:HouseholdFuelOtherType"/>
   </simpleType>
-  <simpleType name="BBRumahTanggaEnumerationType">
+  <simpleType name="HouseholdFuelEnumerationType">
     <restriction base="string">
-      <enumeration value="Gas"/>
-      <enumeration value="MinyakTanah"/>
+      <enumeration value="LPG"/>
+      <enumeration value="Kerosene"/>
     </restriction>
   </simpleType>
-  <simpleType name="BBRumahTanggaOtherType">
+  <simpleType name="HouseholdFuelOtherType">
     <restriction base="string">
       <pattern value="other: \w{2,}"/>
     </restriction>
   </simpleType>
-  <element name="EmisiAir" substitutionGroup="wtr:WaterSurface" type="emisi:EmisiAirType"/>
-  <complexType name="EmisiAirType">
+  <element name="WaterEmission" substitutionGroup="wtr:WaterSurface" type="emisi:WaterEmissionType"/>
+  <complexType name="WaterEmissionType">
     <complexContent>
       <extension base="wtr:WaterSurfaceType">
         <sequence>
-          <element name="FaktorEmisi" type="double"/>
-          <element name="Luas" type="double"/>
-          <element name="TotalEmisi" type="double"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  <complexType name="EmisiAirPropertyType">
+  <complexType name="WaterEmissionPropertyType">
     <sequence minOccurs="0">
-      <element ref="emisi:EmisiAir"/>
+      <element ref="emisi:WaterEmission"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="EmisiBBKendaraan" substitutionGroup="bldg:Building" type="emisi:EmisiBBKendaraanType"/>
-  <complexType name="EmisiBBKendaraanType">
+  <element name="HouseholdEmission" substitutionGroup="bldg:Building" type="emisi:HouseholdEmissionType"/>
+  <complexType name="HouseholdEmissionType">
     <complexContent>
       <extension base="bldg:BuildingType">
         <sequence>
-          <element name="JenisKendaraan" type="emisi:JenisKendaraanType"/>
-          <element name="FaktorEmisi" type="double"/>
-          <element name="TotalKonsumsi" type="double"/>
-          <element name="TotalEmisi" type="double"/>
+          <element name="vehicleFuelType" type="emisi:VehicleFuelType"/>
+          <element name="vehicleEmissionFactor" type="double"/>
+          <element name="vehicleTotalConsumption" type="double"/>
+          <element name="vehicleTotalEmission" type="double"/>
+		  <element name="householdFuelType" type="emisi:HouseholdFuelType"/>
+		  <element name="householdFuelEmissionFactor" type="double"/>
+		  <element name="householdFuelTotalConsumption" type="double"/>
+		  <element name="householdFuelTotalEmission" type="double"/>
+		  <element name="electricalEmissionFactor" type="double"/>
+		  <element name="electricalTotalConsumption" type="double"/>
+		  <element name="electricalTotalEmission" type="double"/>
+		  <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  <complexType name="EmisiBBKendaraanPropertyType">
+  <complexType name="HouseholdEmissionPropertyType">
     <sequence minOccurs="0">
-      <element ref="emisi:EmisiBBKendaraan"/>
-    </sequence>
-    <attributeGroup ref="gml:AssociationAttributeGroup"/>
-  </complexType>
-  <element name="EmisiBBRumahTangga" substitutionGroup="bldg:Building" type="emisi:EmisiBBRumahTanggaType">
-    <annotation>
-      <documentation>utamanya untuk memasak. bisa juga untuk penerangan, dll di luar kendaraan</documentation>
-    </annotation>
-  </element>
-  <complexType name="EmisiBBRumahTanggaType">
-    <complexContent>
-      <extension base="bldg:BuildingType">
-        <sequence>
-          <element name="JenisBahanBakar" type="emisi:BBRumahTanggaType"/>
-          <element name="FaktorEmisi" type="double"/>
-          <element name="TotalKonsumsi" type="double"/>
-          <element name="TotalEmisi" type="double"/>
-        </sequence>
-      </extension>
-    </complexContent>
-  </complexType>
-  <complexType name="EmisiBBRumahTanggaPropertyType">
-    <sequence minOccurs="0">
-      <element ref="emisi:EmisiBBRumahTangga"/>
-    </sequence>
-    <attributeGroup ref="gml:AssociationAttributeGroup"/>
-  </complexType>
-  <element name="EmisiListrik" substitutionGroup="bldg:Building" type="emisi:EmisiListrikType">
-    <annotation>
-      <documentation>termasuk parkir dan jalan internal di dalam persil</documentation>
-    </annotation>
-  </element>
-  <complexType name="EmisiListrikType">
-    <complexContent>
-      <extension base="bldg:BuildingType">
-        <sequence>
-          <element name="FaktorEmisi" type="double"/>
-          <element name="KonsumsiListrik" type="double"/>
-          <element name="TotalEmisi" type="double"/>
-        </sequence>
-      </extension>
-    </complexContent>
-  </complexType>
-  <complexType name="EmisiListrikPropertyType">
-    <sequence minOccurs="0">
-      <element ref="emisi:EmisiListrik"/>
+      <element ref="emisi:HouseholdEmission"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
@@ -159,117 +138,120 @@
       <pattern value="other: \w{2,}"/>
     </restriction>
   </simpleType>
-  <element name="JejakKarbon" type="emisi:JejakKarbonType" substitutionGroup="lanpar:RuangHak"/>
-  <complexType name="JejakKarbonType">
+  <element name="NetCarbon" type="emisi:NetCarbonType" substitutionGroup="lanpar:LandParcel"/>
+  <complexType name="NetCarbonType">
     <complexContent>
-      <extension base="lanpar:RuangHakType">
+      <extension base="lanpar:LandParcelType">
         <sequence>
-          <element name="TotalStokKarbon" type="double"/>
-          <element name="TotalEmisi" type="double"/>
+          <element name="totalCarbonStock" type="double"/>
+          <element name="totalEmission" type="double"/>
           <element name="NetCarbonSink" type="double"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:_OpeningPropertyType">
+		  <element maxOccurs="unbounded" minOccurs="0" name="carbonSpace" type="emisi:NetCarbonSpacePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:_OpeningPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:_BoundarySurfacePropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:_BoundarySurfacePropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:SolitaryVegetationObjectPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalCarbonStock" type="emisi:SolitaryVegetationObjectPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiListrikPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:HouseholdEmissionPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiBBKendaraanPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:WaterEmissionPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiBBRumahTanggaPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:AuxiliaryTrafficAreaPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiAirPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmission" type="emisi:TrafficAreaPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:AuxiliaryTrafficAreaPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalCarbonStock" type="emisi:LowVegetationPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:TrafficAreaPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalCarbonStock" type="emisi:TreeClusterPropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:TanamanRendahPropertyType">
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalCarbonStock" type="emisi:LandUsePropertyType">
           <annotation>
             <appinfo>
               <taggedValue tag="relationType">aggregation</taggedValue>
             </appinfo>
           </annotation>
         </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:PohonJamakPropertyType">
-          <annotation>
-            <appinfo>
-              <taggedValue tag="relationType">aggregation</taggedValue>
-            </appinfo>
-          </annotation>
-        </element>
-        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:LandUsePropertyType">
-          <annotation>
-            <appinfo>
-              <taggedValue tag="relationType">aggregation</taggedValue>
-            </appinfo>
-          </annotation>
-        </element>
-      </sequence>
+		</sequence>
     </extension>
   </complexContent>
 </complexType>
-  <complexType name="JejakKarbonPropertyType">
+  <complexType name="NetCarbonPropertyType">
     <sequence minOccurs="0">
-      <element ref="emisi:JejakKarbon"/>
+      <element ref="emisi:NetCarbon"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <simpleType name="JenisKendaraanType">
+  <element name="NetCarbonSpace" type="emisi:NetCarbonSpaceType" substitutionGroup="lanpar:RighOfSpace"/>
+  <complexType name="NetCarbonSpaceType">
+    <complexContent>
+      <extension base="lanpar:RighOfSpaceType">
+        <sequence>
+          <element name="totalCarbonStock" type="double"/>
+          <element name="totalEmission" type="double"/>
+          <element name="NetCarbonSink" type="double"/>
+        </sequence>
+	  </extension>
+	</complexContent>
+  </complexType>
+  <complexType name="NetCarbonSpacePropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:NetCarbonSpace"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="VehicleFuelType">
     <union memberTypes="emisi:JenisKendaraanEnumerationType emisi:JenisKendaraanOtherType"/>
   </simpleType>
   <simpleType name="JenisKendaraanEnumerationType">
     <restriction base="string">
-      <enumeration value="SepedaMotor"/>
-      <enumeration value="Mobil"/>
-      <enumeration value="Bus"/>
-      <enumeration value="Truk"/>
+      <enumeration value="Gasoline"/>
+      <enumeration value="Diesel"/>
     </restriction>
   </simpleType>
   <simpleType name="JenisKendaraanOtherType">
@@ -300,9 +282,9 @@
     <complexContent>
       <extension base="luse:LandUseType">
         <sequence>
-          <element name="FaktorStokKarbon" type="double" substitutionGroup="luse:_GenericApplicationPropertyOfLandUse"/>
-          <element name="Luas" type="double" substitutionGroup="luse:_GenericApplicationPropertyOfLandUse"/>
-          <element name="TotalEmisi" type="double" substitutionGroup="luse:_GenericApplicationPropertyOfLandUse"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -368,21 +350,21 @@
       <pattern value="other: \w{2,}"/>
     </restriction>
   </simpleType>
-  <element name="PohonJamak" substitutionGroup="veg:PlantCover" type="emisi:PohonJamakType"/>
-  <complexType name="PohonJamakType">
+  <element name="TreeCluster" substitutionGroup="veg:PlantCover" type="emisi:TreeClusterType"/>
+  <complexType name="TreeClusterType">
     <complexContent>
       <extension base="veg:PlantCoverType">
         <sequence>
-          <element name="FaktorStokKarbon" type="double"/>
+          <element name="carbonStockFactor" type="double"/>
           <element name="LuasTajuk" type="double"/>
-          <element name="TotalStokKarbon" type="double"/>
+          <element name="totalCarbonStock" type="double"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  <complexType name="PohonJamakPropertyType">
+  <complexType name="TreeClusterPropertyType">
     <sequence minOccurs="0">
-      <element ref="emisi:PohonJamak"/>
+      <element ref="emisi:TreeCluster"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
@@ -391,9 +373,9 @@
     <complexContent>
       <extension base="veg:SolitaryVegetationObjectType">
         <sequence>
-          <element name="crownArea" type="double" substitutionGroup="veg:_GenericApplicationPropertyOfSolitaryVegetationObject"/>
-          <element name="FaktorStokKarbon" type="double" substitutionGroup="veg:_GenericApplicationPropertyOfSolitaryVegetationObject"/>
-          <element name="TotalStokKarbon" type="double" substitutionGroup="veg:_GenericApplicationPropertyOfSolitaryVegetationObject"/>
+          <element name="aboveGroundBiomass" type="double"/>
+          <element name="carbonStockFactor" type="double"/>
+          <element name="totalCarbonStock" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -404,25 +386,25 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="TanamanRendah" substitutionGroup="veg:PlantCover" type="emisi:TanamanRendahType"/>
-  <complexType name="TanamanRendahType">
+  <element name="LowVegetation" substitutionGroup="veg:PlantCover" type="emisi:LowVegetationType"/>
+  <complexType name="LowVegetationType">
     <complexContent>
       <extension base="veg:PlantCoverType">
         <sequence>
-          <element name="FaktorStokKarbon" type="double"/>
+          <element name="carbonStockFactor" type="double"/>
           <element name="LuasTajuk" type="double"/>
-          <element name="TotalStokKarbon" type="double"/>
+          <element name="totalCarbonStock" type="double"/>
         </sequence>
       </extension>
     </complexContent>
   </complexType>
-  <complexType name="TanamanRendahPropertyType">
+  <complexType name="LowVegetationPropertyType">
     <sequence minOccurs="0">
-      <element ref="emisi:TanamanRendah"/>
+      <element ref="emisi:LowVegetation"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="TrafficArea" substitutionGroup="tran:_TransportationObject" type="emisi:TrafficAreaType">
+  <element name="TrafficArea" substitutionGroup="tran:TrafficArea" type="emisi:TrafficAreaType">
     <annotation>
       <documentation>Type describing the class for traffic Areas. Traffic areas are the surfaces where traffic actually takes
 				place. As subclass of _CityObject, a TrafficArea inherits all attributes and relations, in particular an id, names,
@@ -431,11 +413,11 @@
   </element>
   <complexType name="TrafficAreaType">
     <complexContent>
-      <extension base="tran:AbstractTransportationObjectType">
+      <extension base="tran:TrafficAreaType">
         <sequence>
-          <element name="FaktorEmisi" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfTrafficArea"/>
-          <element name="Luas" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfTrafficArea"/>
-          <element name="TotalEmisi" type="double" substitutionGroup="tran:_GenericApplicationPropertyOfTrafficArea"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -446,19 +428,19 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element abstract="true" name="_BoundarySurface" substitutionGroup="core:_CityObject" type="emisi:_BoundarySurfaceType">
+  <element abstract="true" name="_BoundarySurface" substitutionGroup="bldg:_BoundarySurface" type="emisi:_BoundarySurfaceType">
     <annotation>
       <documentation>SIG3D: Abstract super class of boundary surfaces of Building, BuildingPart, Room and BuildingInstallation</documentation>
     </annotation>
   </element>
   <complexType abstract="true" name="_BoundarySurfaceType">
     <complexContent>
-      <extension base="core:AbstractCityObjectType">
+      <extension base="bldg:AbstractBoundarySurfaceType">
         <sequence>
-          <element name="Material" type="string" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
-          <element name="FaktorEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
-          <element name="Luas/Volume" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
-          <element name="TotalEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="Material" type="string"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -469,19 +451,131 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element abstract="true" name="_Opening" substitutionGroup="core:_CityObject" type="emisi:_OpeningType">
+  <complexType name="RoofSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================== -->
+	<element name="RoofSurface" type="emisi:RoofSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================== -->
+
+	<complexType name="WallSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="WallSurface" type="emisi:WallSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="GroundSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="GroundSurface" type="emisi:GroundSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="ClosureSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="ClosureSurface" type="emisi:ClosureSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+
+	<!-- ===================================LOD4 only Surfaces======================================= -->
+	<!-- ========================================================================================= -->
+	<complexType name="FloorSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="FloorSurface" type="emisi:FloorSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="OuterFloorSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================== -->
+	<element name="OuterFloorSurface" type="emisi:OuterFloorSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================== -->
+	
+	<complexType name="InteriorWallSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="InteriorWallSurface" type="emisi:InteriorWallSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="CeilingSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="CeilingSurface" type="emisi:CeilingSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="OuterCeilingSurfaceType">
+		<complexContent>
+			<extension base="emisi:_BoundarySurfaceType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================== -->
+	<element name="OuterCeilingSurface" type="emisi:OuterCeilingSurfaceType" substitutionGroup="emisi:_BoundarySurface"/>
+	<!-- ========================================================================================== -->
+	
+	<!-- =============================Relation of Buildings/Rooms to its bounding Surfaces================== -->
+	<!-- ========================================================================================= -->
+  <element abstract="true" name="_Opening" substitutionGroup="bldg:_Opening" type="emisi:_OpeningType">
     <annotation>
       <documentation>SIG3D: Abstract super class of Window and Door</documentation>
     </annotation>
   </element>
   <complexType abstract="true" name="_OpeningType">
     <complexContent>
-      <extension base="core:AbstractCityObjectType">
+      <extension base="bldg:AbstractOpeningType">
         <sequence>
-          <element name="Material" type="string" substitutionGroup="bldg:_GenericApplicationPropertyOfOpening"/>
-          <element name="FaktorEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfOpening"/>
-          <element name="Luas/Volume" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfOpening"/>
-          <element name="TotalEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfOpening"/>
+          <element name="Material" type="string"/>
+          <element name="emissionFactor" type="double"/>
+          <element name="area" type="double"/>
+          <element name="totalEmission" type="double"/>
         </sequence>
       </extension>
     </complexContent>
@@ -492,4 +586,39 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
+  <complexType name="WindowType">
+		<annotation>
+			<documentation> Type for windows in boundary surfaces. Used in LOD3 and LOD4 only . As subclass of _CityObject, a window
+				inherits all attributes and relations, in particular an id, names, external references, and generalization relations.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="emisi:_OpeningType">
+				<sequence>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="Window" type="emisi:WindowType" substitutionGroup="emisi:_Opening"/>
+	<!-- ========================================================================================= -->
+	
+	<complexType name="DoorType">
+		<annotation>
+			<documentation> Type for doors in boundary surfaces. Used in LOD3 and LOD4 only . As subclass of _CityObject, a Door
+				inherits all attributes and relations, in particular an id, names, external references, and generalization relations.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="emisi:_OpeningType">
+				<sequence>
+					<element name="address" type="core:AddressPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ========================================================================================= -->
+	<element name="Door" type="emisi:DoorType" substitutionGroup="emisi:_Opening"/>
+	<!-- ========================================================================================= -->
+	
  </schema>
