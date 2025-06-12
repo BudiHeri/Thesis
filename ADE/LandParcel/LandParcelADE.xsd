@@ -45,7 +45,7 @@
 		  <element minOccurs="0" name="lod2Surface" type="gml:SurfacePropertyType"/>
 		  <element minOccurs="0" name="lod3Surface" type="gml:SurfacePropertyType"/>
 		  <element minOccurs="0" name="lod4Surface" type="gml:SurfacePropertyType"/>
-          <element maxOccurs="unbounded" minOccurs="0" name="rightOfSpace" type="lanpar:RighOfSpacePropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="rightOfSpace" type="lanpar:RightOfSpacePropertyType"/>
           <element maxOccurs="unbounded" minOccurs="0" name="building" type="lanpar:BuildingPropertyType"/>
         </sequence>
       </extension>
@@ -57,8 +57,8 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="RighOfSpace" substitutionGroup="core:_CityObject" type="lanpar:RighOfSpaceType"/>
-  <complexType name="RighOfSpaceType">
+  <element name="RightOfSpace" substitutionGroup="core:_CityObject" type="lanpar:RightOfSpaceType"/>
+  <complexType name="RightOfSpaceType">
     <complexContent>
       <extension base="core:AbstractCityObjectType">
         <sequence>
@@ -73,9 +73,9 @@
       </extension>
     </complexContent>
   </complexType>
-  <complexType name="RighOfSpacePropertyType">
+  <complexType name="RightOfSpacePropertyType">
     <sequence minOccurs="0">
-      <element ref="lanpar:RighOfSpace"/>
+      <element ref="lanpar:RightOfSpace"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
@@ -88,7 +88,7 @@
           <element name="type" type="lanpar:LA_HakAtasTanahType"/>
           <element name="uID" type="string"/>
           <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:LandParcelPropertyType"/>
-		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:RighOfSpacePropertyType"/>
+		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:RightOfSpacePropertyType"/>
 		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:BuildingPropertyType"/>
 		  <element maxOccurs="unbounded" minOccurs="0" name="su" type="lanpar:BuildingUnitPropertyType"/>
         </sequence>
@@ -241,10 +241,10 @@ ISO 6707-1, Space: area or volume bounded actually or theoretically</documentati
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="SpatialPlanSpaceUnit" substitutionGroup="lanpar:RighOfSpace" type="lanpar:SpatialPlanSpaceUnitType"/>
+  <element name="SpatialPlanSpaceUnit" substitutionGroup="lanpar:RightOfSpace" type="lanpar:SpatialPlanSpaceUnitType"/>
   <complexType name="SpatialPlanSpaceUnitType">
     <complexContent>
-      <extension base="lanpar:RighOfSpaceType">
+      <extension base="lanpar:RightOfSpaceType">
         <sequence>
           <element minOccurs="0" name="puId" type="string"/>
 		  <element minOccurs="0" name="zoningType" type="string"/>
