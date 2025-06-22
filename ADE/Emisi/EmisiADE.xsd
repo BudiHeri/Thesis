@@ -227,10 +227,10 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
-  <element name="NetCarbonSpace" type="emisi:NetCarbonSpaceType" substitutionGroup="lanpar:RighOfSpace"/>
+  <element name="NetCarbonSpace" type="emisi:NetCarbonSpaceType" substitutionGroup="lanpar:RightOfSpace"/>
   <complexType name="NetCarbonSpaceType">
     <complexContent>
-      <extension base="lanpar:RighOfSpaceType">
+      <extension base="lanpar:RightOfSpaceType">
         <sequence>
           <element name="totalCarbonStock" type="double"/>
           <element name="totalEmission" type="double"/>
